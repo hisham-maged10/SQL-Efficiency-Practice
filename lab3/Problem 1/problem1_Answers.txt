@@ -1,0 +1,22 @@
+-If mgr_ssn and Dno are both NOT NULL, what issues you will face to insert
+the first row in EMPLOYEE or DEPARTMENT? How did you solve it?
+	SQL Query: insert into department values(1,'management',4725,'2019-11-02');
+	Error:
+	 #1452 - Cannot add or update a child row: a foreign key constraint fails (`company`.`department`, CONSTRAINT `department_ibfk_1` FOREIGN KEY (`mgr_ssn`) REFERENCES `employee` (`ssn`))
+	Solution:
+	1-SET GLOBAL FOREIGN_KEY_CHECKS=0;
+	2-insert into employee 
+	values(4725,'Hisham','Maged','1998-10-20','N/A','m',10000,1);
+	3-SET GLOBAL FOREIGN_KEY_CHECKS=1;
+	4-insert into department values(1,'management',4725,'2019-11-02');
+===================================
+-Insert a row in the DEPARTMENT table that references a row in the
+EMPLOYEE table. Then try to delete the referenced row. What happened?
+	SQL Query: delete from employee where ssn = 4725;	
+	Error: #1451 - Cannot delete or update a parent row: a foreign key constraint fails (`company`.`department`, CONSTRAINT `department_ibfk_1` FOREIGN KEY (`mgr_ssn`) REFERENCES `employee` (`ssn`))
+===================================
+-Insert a row in the PROJECT table that references a row in the Department
+isn’t exist yet. What happened?
+	SQL Query: insert into project values(1,'project x','loc y',2);
+	Error:  #1452 - Cannot add or update a child row: a foreign key constraint fails (`company`.`project`, CONSTRAINT `project_ibfk_1` FOREIGN KEY (`dno`) REFERENCES `department` (`dnumber`))
+	Reason: can't add a tuple to project with a a non existing value in dnumber of department relation
